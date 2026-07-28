@@ -24,7 +24,7 @@ class PublicTournamentController extends Controller
         $tournament = $this->findPublicTournament($tenantSlug, $tournamentSlug);
 
         if (! $tournament) {
-            return response()->json(['message' => 'Tournament not found'], 404);
+            return response()->json(['message' => 'Torneo no encontrado'], 404);
         }
 
         $tournament->load(['sport', 'groups']);
@@ -37,7 +37,7 @@ class PublicTournamentController extends Controller
         $tournament = $this->findPublicTournament($tenantSlug, $tournamentSlug);
 
         if (! $tournament) {
-            return response()->json(['message' => 'Tournament not found'], 404);
+            return response()->json(['message' => 'Torneo no encontrado'], 404);
         }
 
         $matches = GameMatch::query()
@@ -54,7 +54,7 @@ class PublicTournamentController extends Controller
         $tournament = $this->findPublicTournament($tenantSlug, $tournamentSlug);
 
         if (! $tournament) {
-            return response()->json(['message' => 'Tournament not found'], 404);
+            return response()->json(['message' => 'Torneo no encontrado'], 404);
         }
 
         $query = Standing::query()
@@ -77,7 +77,7 @@ class PublicTournamentController extends Controller
         $tournament = $this->findPublicTournament($tenantSlug, $tournamentSlug);
 
         if (! $tournament) {
-            return response()->json(['message' => 'Tournament not found'], 404);
+            return response()->json(['message' => 'Torneo no encontrado'], 404);
         }
 
         $rows = MatchEvent::query()

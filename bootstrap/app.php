@@ -22,5 +22,58 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->shouldRenderJsonWhen(
+            fn ($request, $e) => $request->is('api/*') || $request->expectsJson()
+        );
+
+        $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json(['message' => 'No autenticado. Iniciá sesión de nuevo.'], 401);
+            }
+        });
+
+        $exceptions->render(function (\Illuminate\Auth\Access\AuthorizationException $e, $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json([
+                    'message' => $e->getMessage() !== '' && $e->getMessage() !== 'This action is unauthorized.'
+                        ? $e->getMessage()
+                        : 'No tenés permiso para esta acción.',
+                ], 403);
+            }
+        });
+
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json(['message' => 'Recurso no encontrado.'], 404);
+            }
+        });
+
+        $exceptions->render(function (\Illuminate\Database\Eloquent\ModelNotFoundException $e, $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json(['message' => 'Recurso no encontrado.'], 404);
+            }
+        });
+
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
+            if (! ($request->is('api/*') || $request->expectsJson())) {
+                return null;
+            }
+
+            $fallback = match ($e->getStatusCode()) {
+                401 => 'No autenticado. Iniciá sesión de nuevo.',
+                403 => 'No tenés permiso para esta acción.',
+                404 => 'Recurso no encontrado.',
+                405 => 'Método no permitido.',
+                422 => 'Los datos enviados no son válidos.',
+                429 => 'Demasiadas solicitudes. Probá de nuevo en unos segundos.',
+                default => 'Ocurrió un error. Intentá de nuevo.',
+            };
+
+            $message = $e->getMessage();
+            if ($message === '' || $message === 'This action is unauthorized.' || $message === 'Unauthenticated.') {
+                $message = $fallback;
+            }
+
+            return response()->json(['message' => $message], $e->getStatusCode());
+        });
     })->create();

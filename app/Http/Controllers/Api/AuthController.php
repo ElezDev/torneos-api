@@ -68,7 +68,7 @@ class AuthController extends Controller
 
         if (! $token = $this->guard()->attempt($credentials)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'email' => [__('auth.failed')],
             ]);
         }
 
@@ -98,7 +98,7 @@ class AuthController extends Controller
         $this->guard()->logout();
 
         return response()->json([
-            'message' => 'Logged out',
+            'message' => 'Sesión cerrada',
         ]);
     }
 
