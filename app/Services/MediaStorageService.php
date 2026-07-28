@@ -24,8 +24,15 @@ class MediaStorageService
         $this->assertValidImage($file);
 
         $filename = Str::uuid()->toString().'.'.$file->guessExtension();
+        $path = $file->storeAs($directory, $filename, 'public');
 
-        return $file->storeAs($directory, $filename, 'public');
+        if (! is_string($path) || $path === '' || ! $this->disk()->exists($path)) {
+            throw ValidationException::withMessages([
+                'image' => ['No se pudo guardar la imagen en el servidor. Revisá permisos de storage.'],
+            ]);
+        }
+
+        return $path;
     }
 
     public function replace(?string $oldPath, UploadedFile $file, string $directory): string
