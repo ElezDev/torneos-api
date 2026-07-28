@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWTGuard;
 
 class AuthController extends Controller
 {
@@ -65,14 +66,14 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (! $token = auth('api')->attempt($credentials)) {
+        if (! $token = $this->guard()->attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
         /** @var User $user */
-        $user = auth('api')->user();
+        $user = $this->guard()->user();
         $user->load(['roles', 'permissions', 'tenants']);
 
         if (! $user->isSuperAdmin()) {
@@ -86,7 +87,7 @@ class AuthController extends Controller
     public function me(Request $request): UserResource
     {
         /** @var User $user */
-        $user = auth('api')->user();
+        $user = $this->guard()->user();
         $user->load(['roles', 'permissions', 'tenants']);
 
         return new UserResource($user);
@@ -94,7 +95,7 @@ class AuthController extends Controller
 
     public function logout(): JsonResponse
     {
-        auth('api')->logout();
+        $this->guard()->logout();
 
         return response()->json([
             'message' => 'Logged out',
@@ -103,13 +104,21 @@ class AuthController extends Controller
 
     public function refresh(): JsonResponse
     {
-        $token = auth('api')->refresh();
+        $token = $this->guard()->refresh();
 
         /** @var User $user */
-        $user = auth('api')->user();
+        $user = $this->guard()->user();
         $user->load(['roles', 'permissions', 'tenants']);
 
         return $this->respondWithToken($token, $user);
+    }
+
+    private function guard(): JWTGuard
+    {
+        /** @var JWTGuard $guard */
+        $guard = auth('api');
+
+        return $guard;
     }
 
     private function respondWithToken(string $token, User $user): JsonResponse

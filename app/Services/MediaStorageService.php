@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,7 +16,7 @@ class MediaStorageService
             return null;
         }
 
-        return Storage::disk('public')->url($path);
+        return $this->disk()->url($path);
     }
 
     public function storeImage(UploadedFile $file, string $directory): string
@@ -41,9 +42,19 @@ class MediaStorageService
             return;
         }
 
-        if (Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
+        $disk = $this->disk();
+
+        if ($disk->exists($path)) {
+            $disk->delete($path);
         }
+    }
+
+    private function disk(): FilesystemAdapter
+    {
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+
+        return $disk;
     }
 
     private function assertValidImage(UploadedFile $file): void
