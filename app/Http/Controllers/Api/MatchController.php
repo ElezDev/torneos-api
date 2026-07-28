@@ -128,7 +128,7 @@ class MatchController extends Controller
         if ($nextStatus === 'finished') {
             if ($homeScore === null || $awayScore === null) {
                 throw ValidationException::withMessages([
-                    'homeScore' => ['Para finalizar el partido cargá el marcador local y visitante.'],
+                    'homeScore' => ['Para finalizar el partido carga el marcador local y visitante.'],
                 ]);
             }
 

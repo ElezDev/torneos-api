@@ -17,7 +17,7 @@ class SetCurrentTenant
 
         if (! $tenantId) {
             return response()->json([
-                'message' => 'Se requiere la organización. Enviá el header X-Tenant-Id.',
+                'message' => 'Se requiere la organización. Envía el header X-Tenant-Id.',
             ], 400);
         }
 
@@ -25,7 +25,7 @@ class SetCurrentTenant
 
         if (! $user || ! $user->belongsToTenant((int) $tenantId)) {
             return response()->json([
-                'message' => 'No pertenecés a esta organización.',
+                'message' => 'No perteneces a esta organización.',
             ], 403);
         }
 

@@ -78,7 +78,7 @@ class AuthController extends Controller
 
         if (! $user->isSuperAdmin()) {
             $hasActiveTenant = $user->tenants()->where('tenants.is_active', true)->exists();
-            abort_unless($hasActiveTenant, 403, 'Tu organización está inactiva o no tenés acceso.');
+            abort_unless($hasActiveTenant, 403, 'Tu organización está inactiva o no tienes acceso.');
         }
 
         return $this->respondWithToken($token, $user);

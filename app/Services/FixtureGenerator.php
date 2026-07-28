@@ -45,7 +45,7 @@ class FixtureGenerator
             ->get();
 
         if ($teams->count() < 2) {
-            throw new InvalidArgumentException('Necesitás al menos 2 equipos para generar el fixture.');
+            throw new InvalidArgumentException('Necesitas al menos 2 equipos para generar el fixture.');
         }
 
         $startDate = Carbon::parse($options['startDate'])->startOfDay();
@@ -184,13 +184,13 @@ class FixtureGenerator
             $tournament->loadMissing('groups');
             if ($tournament->groups->isEmpty()) {
                 throw new InvalidArgumentException(
-                    'No hay grupos. Activá “Distribuir equipos en grupos” o creá grupos antes.'
+                    'No hay grupos. Activa “Distribuir equipos en grupos” o crea grupos antes.'
                 );
             }
             $ungrouped = $teams->whereNull('tournament_group_id');
             if ($ungrouped->isNotEmpty()) {
                 throw new InvalidArgumentException(
-                    'Hay equipos sin grupo. Activá la distribución automática o asignalos manualmente: '
+                    'Hay equipos sin grupo. Activa la distribución automática o asígnalos manualmente: '
                     .$ungrouped->pluck('name')->join(', ')
                 );
             }
@@ -239,8 +239,8 @@ class FixtureGenerator
         $teamCount = $teams->count();
         if ($teamCount < $groupCount * 2) {
             throw new InvalidArgumentException(
-                "Para {$groupCount} grupos necesitás al menos ".($groupCount * 2)
-                ." equipos (tenés {$teamCount}). Bajá la cantidad de grupos o agregá equipos."
+                "Para {$groupCount} grupos necesitas al menos ".($groupCount * 2)
+                ." equipos (tienes {$teamCount}). Baja la cantidad de grupos o agrega equipos."
             );
         }
 

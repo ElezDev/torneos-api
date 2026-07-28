@@ -28,7 +28,7 @@ class MediaStorageService
 
         if (! is_string($path) || $path === '' || ! $this->disk()->exists($path)) {
             throw ValidationException::withMessages([
-                'image' => ['No se pudo guardar la imagen en el servidor. Revisá permisos de storage.'],
+                'image' => ['No se pudo guardar la imagen en el servidor. Revisa permisos de storage.'],
             ]);
         }
 

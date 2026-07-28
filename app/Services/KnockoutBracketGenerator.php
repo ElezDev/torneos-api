@@ -39,7 +39,7 @@ class KnockoutBracketGenerator
 
         if (($count & ($count - 1)) !== 0) {
             throw new InvalidArgumentException(
-                "Para el bracket necesitás una potencia de 2 equipos (4, 8, 16…). Tenés {$count}."
+                "Para el bracket necesitas una potencia de 2 equipos (4, 8, 16…). Tienes {$count}."
             );
         }
 

@@ -133,7 +133,7 @@ class PlanillaService
 
         if ($data['type'] === 'substitution' && empty($data['relatedPlayerId'])) {
             throw ValidationException::withMessages([
-                'relatedPlayerId' => ['En un cambio indicá quién entra.'],
+                'relatedPlayerId' => ['En un cambio indica quién entra.'],
             ]);
         }
 
@@ -165,7 +165,7 @@ class PlanillaService
             foreach ($sheets as $sheet) {
                 if ($sheet->players()->count() === 0) {
                     throw ValidationException::withMessages([
-                        'lineup' => ["Cargá la nómina de {$sheet->team->name}."],
+                        'lineup' => ["Carga la nómina de {$sheet->team->name}."],
                     ]);
                 }
                 $sheet->update([
@@ -201,7 +201,7 @@ class PlanillaService
 
             if ($match->stage === 'knockout' && $homeScore === $awayScore) {
                 throw ValidationException::withMessages([
-                    'score' => ['En eliminación no puede empatar: cargá un gol decisivo o resolvé el resultado.'],
+                    'score' => ['En eliminación no puede empatar: carga un gol decisivo o resuelve el resultado.'],
                 ]);
             }
 

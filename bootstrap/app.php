@@ -28,7 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
-                return response()->json(['message' => 'No autenticado. Iniciá sesión de nuevo.'], 401);
+                return response()->json(['message' => 'No autenticado. Inicia sesión de nuevo.'], 401);
             }
         });
 
@@ -37,7 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json([
                     'message' => $e->getMessage() !== '' && $e->getMessage() !== 'This action is unauthorized.'
                         ? $e->getMessage()
-                        : 'No tenés permiso para esta acción.',
+                        : 'No tienes permiso para esta acción.',
                 ], 403);
             }
         });
@@ -60,13 +60,13 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             $fallback = match ($e->getStatusCode()) {
-                401 => 'No autenticado. Iniciá sesión de nuevo.',
-                403 => 'No tenés permiso para esta acción.',
+                401 => 'No autenticado. Inicia sesión de nuevo.',
+                403 => 'No tienes permiso para esta acción.',
                 404 => 'Recurso no encontrado.',
                 405 => 'Método no permitido.',
                 422 => 'Los datos enviados no son válidos.',
-                429 => 'Demasiadas solicitudes. Probá de nuevo en unos segundos.',
-                default => 'Ocurrió un error. Intentá de nuevo.',
+                429 => 'Demasiadas solicitudes. Prueba de nuevo en unos segundos.',
+                default => 'Ocurrió un error. Intenta de nuevo.',
             };
 
             $message = $e->getMessage();

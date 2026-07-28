@@ -39,9 +39,9 @@ class TournamentPostController extends Controller
 
         if (empty($data['caption']) && ! $request->hasFile('image')) {
             return response()->json([
-                'message' => 'Agregá una imagen o un texto para publicar.',
+                'message' => 'Agrega una imagen o un texto para publicar.',
                 'errors' => [
-                    'caption' => ['Agregá una imagen o un texto para publicar.'],
+                    'caption' => ['Agrega una imagen o un texto para publicar.'],
                 ],
             ], 422);
         }
