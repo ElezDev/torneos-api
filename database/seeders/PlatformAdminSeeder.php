@@ -10,16 +10,22 @@ class PlatformAdminSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::query()->firstOrCreate(
-            ['email' => 'admin@torneos.test'],
+        $admin = User::query()->updateOrCreate(
+            ['email' => 'edwinsuperadmin@matchday.com'],
             [
-                'name' => 'Super Admin',
-                'password' => Hash::make('password123'),
+                'name' => 'Edwin Super Admin',
+                'password' => Hash::make('Matchday2026!'),
             ]
         );
 
         if (! $admin->hasRole('super-admin')) {
             $admin->assignRole('super-admin');
         }
+
+        // Limpia el admin demo anterior si existía.
+        User::query()
+            ->where('email', 'admin@torneos.test')
+            ->where('id', '!=', $admin->id)
+            ->delete();
     }
 }

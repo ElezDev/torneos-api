@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             SportSeeder::class,
             PlatformAdminSeeder::class,
-            FutsalDemoSeeder::class,
+            PopayanDemoSeeder::class,
         ]);
     }
 }
