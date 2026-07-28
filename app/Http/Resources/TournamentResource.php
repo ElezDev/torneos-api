@@ -2,12 +2,16 @@
 
 namespace App\Http\Resources;
 
+use App\Services\MediaStorageService;
 use Illuminate\Http\Request;
 
 class TournamentResource extends CamelCaseResource
 {
     protected function payload(Request $request): array
     {
+        /** @var MediaStorageService $media */
+        $media = app(MediaStorageService::class);
+
         return [
             'id' => $this->id,
             'tenant_id' => $this->tenant_id,
@@ -20,6 +24,8 @@ class TournamentResource extends CamelCaseResource
             'starts_on' => optional($this->starts_on)?->toDateString(),
             'ends_on' => optional($this->ends_on)?->toDateString(),
             'is_public' => $this->is_public,
+            'banner_path' => $this->banner_path,
+            'banner_url' => $media->url($this->banner_path),
             'points_config' => $this->points_config,
             'sanction_rules' => $this->sanction_rules,
             'tiebreaker_rules' => $this->tiebreaker_rules,

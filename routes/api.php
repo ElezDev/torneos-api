@@ -1,17 +1,23 @@
 <?php
 
+use App\Http\Controllers\Api\AdminOverviewController;
+use App\Http\Controllers\Api\AdminTenantController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MatchPlanillaController;
 use App\Http\Controllers\Api\MatchController;
+use App\Http\Controllers\Api\MediaBannerController;
 use App\Http\Controllers\Api\PlayerController;
+use App\Http\Controllers\Api\PublicBrandingController;
 use App\Http\Controllers\Api\PublicTournamentController;
 use App\Http\Controllers\Api\SportController;
 use App\Http\Controllers\Api\StandingController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\TenantBrandingController;
 use App\Http\Controllers\Api\TenantController;
 use App\Http\Controllers\Api\TournamentController;
 use App\Http\Controllers\Api\TournamentGroupController;
 use App\Http\Controllers\Api\TournamentOpsController;
+use App\Http\Controllers\Api\TournamentPostController;
 use App\Http\Controllers\Api\VenueController;
 use App\Http\Middleware\ConvertCamelCaseInput;
 use App\Http\Middleware\SetCurrentTenant;
@@ -19,7 +25,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware([ConvertCamelCaseInput::class])->group(function () {
     Route::prefix('auth')->group(function () {
-        Route::post('register', [AuthController::class, 'register']);
         Route::post('login', [AuthController::class, 'login']);
 
         Route::middleware('auth:api')->group(function () {
@@ -31,6 +36,8 @@ Route::middleware([ConvertCamelCaseInput::class])->group(function () {
 
     Route::get('sports', [SportController::class, 'index']);
 
+    Route::get('public/tenants/{tenantSlug}/branding', [PublicBrandingController::class, 'show']);
+
     Route::prefix('public/tenants/{tenantSlug}/tournaments/{tournamentSlug}')->group(function () {
         Route::get('/', [PublicTournamentController::class, 'show']);
         Route::get('/matches', [PublicTournamentController::class, 'matches']);
@@ -39,15 +46,29 @@ Route::middleware([ConvertCamelCaseInput::class])->group(function () {
     });
 
     Route::middleware('auth:api')->group(function () {
+        Route::prefix('admin')->middleware('role:super-admin')->group(function () {
+            Route::get('overview', [AdminOverviewController::class, 'show']);
+            Route::get('tenants', [AdminTenantController::class, 'index']);
+            Route::post('tenants', [AdminTenantController::class, 'store']);
+            Route::put('tenants/{tenant}', [AdminTenantController::class, 'update']);
+            Route::patch('tenants/{tenant}', [AdminTenantController::class, 'update']);
+        });
+
         Route::get('tenants', [TenantController::class, 'index'])
             ->middleware('permission:tenants.view');
-        Route::post('tenants', [TenantController::class, 'store'])
-            ->middleware('permission:tenants.create');
         Route::get('tenants/{tenant}', [TenantController::class, 'show'])
             ->middleware('permission:tenants.view');
         Route::put('tenants/{tenant}', [TenantController::class, 'update'])
             ->middleware('permission:tenants.update');
         Route::patch('tenants/{tenant}', [TenantController::class, 'update'])
+            ->middleware('permission:tenants.update');
+        Route::post('tenants/{tenant}/branding/logo', [TenantBrandingController::class, 'uploadLogo'])
+            ->middleware('permission:tenants.update');
+        Route::post('tenants/{tenant}/branding/login-image', [TenantBrandingController::class, 'uploadLoginImage'])
+            ->middleware('permission:tenants.update');
+        Route::delete('tenants/{tenant}/branding/logo', [TenantBrandingController::class, 'deleteLogo'])
+            ->middleware('permission:tenants.update');
+        Route::delete('tenants/{tenant}/branding/login-image', [TenantBrandingController::class, 'deleteLoginImage'])
             ->middleware('permission:tenants.update');
 
         Route::middleware([SetCurrentTenant::class])->group(function () {
@@ -71,6 +92,11 @@ Route::middleware([ConvertCamelCaseInput::class])->group(function () {
             Route::put('tournaments/{tournament}', [TournamentController::class, 'update'])->middleware('permission:tournaments.update');
             Route::patch('tournaments/{tournament}', [TournamentController::class, 'update'])->middleware('permission:tournaments.update');
             Route::delete('tournaments/{tournament}', [TournamentController::class, 'destroy'])->middleware('permission:tournaments.delete');
+            Route::post('tournaments/{tournament}/banner', [MediaBannerController::class, 'uploadTournamentBanner'])->middleware('permission:tournaments.update');
+            Route::delete('tournaments/{tournament}/banner', [MediaBannerController::class, 'deleteTournamentBanner'])->middleware('permission:tournaments.update');
+            Route::get('tournaments/{tournament}/posts', [TournamentPostController::class, 'index'])->middleware('permission:tournaments.view');
+            Route::post('tournaments/{tournament}/posts', [TournamentPostController::class, 'store'])->middleware('permission:tournaments.update');
+            Route::delete('tournaments/{tournament}/posts/{post}', [TournamentPostController::class, 'destroy'])->middleware('permission:tournaments.update');
 
             Route::get('teams', [TeamController::class, 'index'])->middleware('permission:teams.view');
             Route::post('teams', [TeamController::class, 'store'])->middleware('permission:teams.create');
@@ -92,6 +118,8 @@ Route::middleware([ConvertCamelCaseInput::class])->group(function () {
             Route::put('matches/{match}', [MatchController::class, 'update'])->middleware('permission:matches.update');
             Route::patch('matches/{match}', [MatchController::class, 'update'])->middleware('permission:matches.update');
             Route::delete('matches/{match}', [MatchController::class, 'destroy'])->middleware('permission:matches.delete');
+            Route::post('matches/{match}/banner', [MediaBannerController::class, 'uploadMatchBanner'])->middleware('permission:matches.update');
+            Route::delete('matches/{match}/banner', [MediaBannerController::class, 'deleteMatchBanner'])->middleware('permission:matches.update');
 
             Route::get('matches/{match}/planilla', [MatchPlanillaController::class, 'show'])->middleware('permission:match-sheets.manage');
             Route::put('matches/{match}/planilla', [MatchPlanillaController::class, 'updateMeta'])->middleware('permission:match-sheets.manage');

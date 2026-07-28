@@ -63,6 +63,15 @@ class User extends Authenticatable implements JWTSubject
 
     public function belongsToTenant(int $tenantId): bool
     {
+        if ($this->isSuperAdmin()) {
+            return Tenant::query()->whereKey($tenantId)->where('is_active', true)->exists();
+        }
+
         return $this->tenants()->where('tenants.id', $tenantId)->exists();
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('super-admin');
     }
 }

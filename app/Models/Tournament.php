@@ -22,6 +22,7 @@ class Tournament extends Model
         'starts_on',
         'ends_on',
         'is_public',
+        'banner_path',
         'points_config',
         'sanction_rules',
         'tiebreaker_rules',
@@ -64,5 +65,10 @@ class Tournament extends Model
     public function standings(): HasMany
     {
         return $this->hasMany(Standing::class);
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(TournamentPost::class);
     }
 }

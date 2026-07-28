@@ -36,6 +36,7 @@ class GameMatch extends Model
         'winner_team_id',
         'notes',
         'referee_name',
+        'banner_path',
     ];
 
     protected function casts(): array

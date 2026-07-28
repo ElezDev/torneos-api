@@ -2,12 +2,16 @@
 
 namespace App\Http\Resources;
 
+use App\Services\MediaStorageService;
 use Illuminate\Http\Request;
 
 class MatchResource extends CamelCaseResource
 {
     protected function payload(Request $request): array
     {
+        /** @var MediaStorageService $media */
+        $media = app(MediaStorageService::class);
+
         return [
             'id' => $this->id,
             'tenant_id' => $this->tenant_id,
@@ -32,6 +36,8 @@ class MatchResource extends CamelCaseResource
             'winner_team_id' => $this->winner_team_id,
             'notes' => $this->notes,
             'referee_name' => $this->referee_name,
+            'banner_path' => $this->banner_path,
+            'banner_url' => $media->url($this->banner_path),
             'home_placeholder' => $this->placeholderLabel('home'),
             'away_placeholder' => $this->placeholderLabel('away'),
             'home_team' => $this->when(

@@ -12,6 +12,8 @@ class Tenant extends Model
     protected $fillable = [
         'name',
         'slug',
+        'logo_path',
+        'login_image_path',
         'is_active',
     ];
 
@@ -37,5 +39,10 @@ class Tenant extends Model
     public function venues(): HasMany
     {
         return $this->hasMany(Venue::class);
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(TournamentPost::class, 'tenant_id');
     }
 }

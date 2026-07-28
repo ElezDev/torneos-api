@@ -75,6 +75,11 @@ class AuthController extends Controller
         $user = auth('api')->user();
         $user->load(['roles', 'permissions', 'tenants']);
 
+        if (! $user->isSuperAdmin()) {
+            $hasActiveTenant = $user->tenants()->where('tenants.is_active', true)->exists();
+            abort_unless($hasActiveTenant, 403, 'Tu organización está inactiva o no tenés acceso.');
+        }
+
         return $this->respondWithToken($token, $user);
     }
 

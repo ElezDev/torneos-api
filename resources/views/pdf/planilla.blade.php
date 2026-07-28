@@ -170,7 +170,7 @@
   @endphp
 
   <div class="header">
-    <p class="brand">TorneosApp</p>
+    <p class="brand">Matchday</p>
     <p class="subtitle">Planilla oficial de partido · {{ $match->tournament?->name }}</p>
   </div>
 

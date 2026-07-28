@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return response()->json([
-        'app' => 'TorneosApp API',
+        'app' => 'Matchday API',
         'panel' => 'http://localhost:5173',
         'login' => [
             'email' => 'org@torneos.test',
