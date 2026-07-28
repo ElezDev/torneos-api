@@ -158,9 +158,23 @@
 </head>
 <body>
   @php
+    $scoring = $match->tournament?->sport?->scoring_label ?? 'goals';
+    $sportCode = $match->tournament?->sport?->code ?? '';
+    if (in_array($sportCode, ['volleyball', 'voley', 'voleibol'], true)) {
+      $scoring = 'sets';
+    }
+    $scoreEvent = match ($scoring) {
+      'points' => 'Punto',
+      'sets' => 'Punto',
+      default => 'Gol',
+    };
+    $ownScoreEvent = match ($scoring) {
+      'points', 'sets' => 'Punto en contra',
+      default => 'Autogol',
+    };
     $typeLabels = [
-      'goal' => 'Gol',
-      'ownGoal' => 'Autogol',
+      'goal' => $scoreEvent,
+      'ownGoal' => $ownScoreEvent,
       'yellowCard' => 'Amarilla',
       'redCard' => 'Roja',
       'secondYellow' => '2ª amarilla',
