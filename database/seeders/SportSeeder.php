@@ -15,7 +15,7 @@ class SportSeeder extends Seeder
             ['code' => 'football', 'name' => 'Fútbol', 'scoring_label' => 'goals'],
             ['code' => 'futsal', 'name' => 'Fútbol sala', 'scoring_label' => 'goals'],
             ['code' => 'basketball', 'name' => 'Básquet', 'scoring_label' => 'points'],
-            ['code' => 'volleyball', 'name' => 'Vóley', 'scoring_label' => 'points'],
+            ['code' => 'volleyball', 'name' => 'Vóley', 'scoring_label' => 'sets'],
             ['code' => 'handball', 'name' => 'Handball', 'scoring_label' => 'goals'],
         ];
 
