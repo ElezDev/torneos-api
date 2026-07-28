@@ -46,22 +46,26 @@ class PopayanDemoSeeder extends Seeder
             [
                 'name' => 'Estadio Ciro López',
                 'address' => 'Calle 5 #12-45, barrio Alfonso López',
-                'city' => 'Popayán, Cauca',
+                'department' => 'Cauca',
+                'city' => 'Popayán',
             ],
             [
                 'name' => 'Coliseo Cubierto Municipal',
                 'address' => 'Carrera 9 #4-20, centro',
-                'city' => 'Popayán, Cauca',
+                'department' => 'Cauca',
+                'city' => 'Popayán',
             ],
             [
                 'name' => 'Cancha Sintética Universidad del Cauca',
                 'address' => 'Calle 5 #4-70, campus Tulcán',
-                'city' => 'Popayán, Cauca',
+                'department' => 'Cauca',
+                'city' => 'Popayán',
             ],
             [
                 'name' => 'Polideportivo La Estancia',
                 'address' => 'Vía al norte, sector La Estancia',
-                'city' => 'Popayán, Cauca',
+                'department' => 'Cauca',
+                'city' => 'Popayán',
             ],
         ])->map(function (array $data) use ($tenant) {
             return Venue::query()->updateOrCreate(
@@ -70,6 +74,7 @@ class PopayanDemoSeeder extends Seeder
                     'name' => $data['name'],
                 ],
                 [
+                    'department' => $data['department'],
                     'city' => $data['city'],
                     'address' => $data['address'],
                 ]

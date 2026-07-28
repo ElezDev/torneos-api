@@ -14,6 +14,7 @@ class Venue extends Model
         'tenant_id',
         'name',
         'address',
+        'department',
         'city',
     ];
 

@@ -26,6 +26,7 @@ class VenueController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'address' => ['nullable', 'string', 'max:255'],
+            'department' => ['nullable', 'string', 'max:100'],
             'city' => ['nullable', 'string', 'max:100'],
         ]);
 
@@ -53,6 +54,7 @@ class VenueController extends Controller
         $data = $request->validate([
             'name' => ['sometimes', 'string', 'max:150'],
             'address' => ['nullable', 'string', 'max:255'],
+            'department' => ['nullable', 'string', 'max:100'],
             'city' => ['nullable', 'string', 'max:100'],
         ]);
 

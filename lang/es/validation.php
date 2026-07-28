@@ -192,6 +192,7 @@ return [
         'body' => 'contenido',
         'title' => 'título',
         'city' => 'ciudad',
+        'department' => 'departamento',
         'address' => 'dirección',
         'slug' => 'slug',
         'tenant_id' => 'organización',

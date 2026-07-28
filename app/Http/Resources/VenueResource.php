@@ -13,6 +13,7 @@ class VenueResource extends CamelCaseResource
             'tenant_id' => $this->tenant_id,
             'name' => $this->name,
             'address' => $this->address,
+            'department' => $this->department,
             'city' => $this->city,
             'created_at' => optional($this->created_at)?->toISOString(),
             'updated_at' => optional($this->updated_at)?->toISOString(),
