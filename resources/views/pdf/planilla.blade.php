@@ -191,7 +191,7 @@
   <div class="vs">
     <h1>{{ $match->homeTeam?->name ?? 'Local' }} vs {{ $match->awayTeam?->name ?? 'Visitante' }}</h1>
     <div class="meta">
-      @if($match->scheduled_at) {{ $match->scheduled_at->timezone(config('app.timezone'))->format('d/m/Y H:i') }} · @endif
+      @if($match->scheduled_at) {{ $match->scheduled_at->timezone(config('app.timezone'))->format('d/m/Y g:i A') }} · @endif
       {{ $match->venue?->name ?? 'Sede por confirmar' }}
       @if($match->group) · {{ $match->group->name }} @endif
       @if($match->round_name) · {{ $match->round_name }} @endif
